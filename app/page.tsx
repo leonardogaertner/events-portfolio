@@ -26,13 +26,10 @@ export default function Home() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   useEffect(() => {
-    // --- 1. Movimentação do Cursor Customizado e Lanterna ---
     const moveCursor = (e: MouseEvent) => {
       const { clientX, clientY } = e;
-      
       gsap.to(dotRef.current, { x: clientX, y: clientY, duration: 0 });
       gsap.to(outlineRef.current, { x: clientX, y: clientY, duration: 0.5, ease: "power3.out" });
-      
       if (glowRef.current) {
         glowRef.current.style.setProperty("--x", `${clientX}px`);
         glowRef.current.style.setProperty("--y", `${clientY}px`);
@@ -40,15 +37,11 @@ export default function Home() {
     };
 
     window.addEventListener("mousemove", moveCursor);
-
-    // Efeito de clique no cursor
     const handleMouseDown = () => gsap.to(outlineRef.current, { scale: 0.7, duration: 0.2 });
     const handleMouseUp = () => gsap.to(outlineRef.current, { scale: 1, duration: 0.2 });
-
     window.addEventListener("mousedown", handleMouseDown);
     window.addEventListener("mouseup", handleMouseUp);
 
-    // --- 2. Efeito de Texto Hacker no Título ---
     const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*";
     const titleElement = titleRef.current;
     if (titleElement) {
@@ -62,19 +55,10 @@ export default function Home() {
       }, 50);
     }
 
-    // --- 3. Animações GSAP Scroll ---
     const ctx = gsap.context(() => {
       gsap.from(".animate-hero", { y: 30, opacity: 0, stagger: 0.1, duration: 1, ease: "power3.out" });
-      
-      gsap.from(".info-card", { 
-        scrollTrigger: { trigger: infoRef.current, start: "top 70%" }, 
-        y: 50, opacity: 0, stagger: 0.2, duration: 0.8 
-      });
-
-      gsap.from(".faq-item", {
-        scrollTrigger: { trigger: faqRef.current, start: "top 80%" },
-        x: -30, opacity: 0, stagger: 0.1, duration: 0.8
-      });
+      gsap.from(".info-card", { scrollTrigger: { trigger: infoRef.current, start: "top 70%" }, y: 50, opacity: 0, stagger: 0.2, duration: 0.8 });
+      gsap.from(".faq-item", { scrollTrigger: { trigger: faqRef.current, start: "top 80%" }, x: -30, opacity: 0, stagger: 0.1, duration: 0.8 });
     }, containerRef);
 
     return () => {
@@ -92,9 +76,9 @@ export default function Home() {
   };
 
   const faqData = [
-    { q: "COMO OBTER O PASSE?", a: "Após preencher o terminal de RSVP, o sistema processará sua identidade e enviará o acesso via canal criptografado." },
-    { q: "EXISTE DRESSCODE?", a: "Estética Neo-Industrial ou Techwear é altamente recomendada para integração total ao ambiente." },
-    { q: "ACESSO ACOMPANHANTE?", a: "Cada protocolo de acesso é individual. Convites extras devem ser solicitados via terminal de comando." }
+    { q: "HOW TO GET THE PASS?", a: "After completing the RSVP terminal, the system will process your ID and deploy your unique access token via encrypted channel." },
+    { q: "DRESS CODE PROTOCOL?", a: "Neo-Industrial or Techwear aesthetics are highly recommended for full environmental integration." },
+    { q: "GUEST ACCESS?", a: "Each access protocol is individual and non-transferable. Extra invites must be requested via the command terminal." }
   ];
 
   return (
@@ -103,14 +87,10 @@ export default function Home() {
       className="bg-background text-white font-mono relative min-h-screen overflow-x-hidden"
       onClick={handleMouseClick}
     >
-      {/* --- CAMADAS ESTÉTICAS --- */}
       <div className="grain fixed inset-0 z-[90] pointer-events-none opacity-[0.03]"></div>
-      
-      {/* Cursor Customizado */}
       <div ref={dotRef} className="cursor-dot hidden md:block"></div>
       <div ref={outlineRef} className="cursor-outline hidden md:block"></div>
       
-      {/* LANTERNA COM VÍDEO REVELÁVEL */}
       <div 
         ref={glowRef} 
         className="fixed inset-0 pointer-events-none z-0 overflow-hidden"
@@ -125,10 +105,8 @@ export default function Home() {
         <div className="absolute inset-0 bg-neon/5 mix-blend-color"></div>
       </div>
 
-      {/* Grid estático de fundo (sempre visível fora da lanterna) */}
       <div className="fixed inset-0 bg-[linear-gradient(to_right,#111_1px,transparent_1px),linear-gradient(to_bottom,#111_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-20 pointer-events-none z-[-1]"></div>
 
-      {/* Clique Ripple Effect */}
       {ripples.map((r) => (
         <div key={r.id} className="fixed pointer-events-none border border-neon rounded-full animate-ping z-50 w-10 h-10"
           style={{ left: r.x - 20, top: r.y - 20 }}
@@ -137,8 +115,8 @@ export default function Home() {
 
       {/* --- HEADER --- */}
       <nav className="fixed top-0 w-full p-6 flex justify-between items-start z-[100] mix-blend-difference">
-        <div className="text-xl font-black tracking-tighter">EVENTATION<span className="text-neon">.</span></div>
-        <div className="flex flex-col items-end gap-1 text-[9px] tracking-[0.2em] text-neon uppercase">
+        <div className="text-xl font-black tracking-tighter italic">EVENTATION<span className="text-neon">.</span></div>
+        <div className="flex flex-col items-end gap-1 text-[9px] tracking-[0.2em] text-neon uppercase font-bold">
           <div className="flex items-center gap-2">
             <span className="w-1.5 h-1.5 bg-neon rounded-full animate-pulse"></span>
             CONNECTION: STABLE
@@ -150,8 +128,8 @@ export default function Home() {
       {/* --- HERO --- */}
       <section className="h-screen flex flex-col items-center justify-center relative z-10 px-4">
         <div className="text-center space-y-6">
-          <p className="animate-hero text-neon text-[10px] tracking-[0.6em] uppercase">[ INITIALIZING_SEQUENCE ]</p>
-          <h1 ref={titleRef} data-value="EVENTATION" className="animate-hero text-6xl md:text-[12rem] font-black tracking-tighter leading-none uppercase">
+          <p className="animate-hero text-neon text-[10px] tracking-[0.6em] uppercase">[ INITIATING_LANDING_SEQUENCE ]</p>
+          <h1 ref={titleRef} data-value="EVENTATION" className="animate-hero text-6xl md:text-[12rem] font-black tracking-tighter leading-none uppercase drop-shadow-2xl">
             EVENTATION
           </h1>
           <div className="animate-hero max-w-xl mx-auto border-y border-white/10 py-6 flex justify-around items-center">
@@ -162,14 +140,14 @@ export default function Home() {
             <div className="h-8 w-[1px] bg-white/10"></div>
             <div className="text-right">
               <p className="text-[10px] text-muted tracking-widest uppercase">Timeline</p>
-              <p className="text-sm font-bold tracking-tighter">15.NOV.2026 // 23:00</p>
+              <p className="text-sm font-bold tracking-tighter">NOV_15.2026 // 23:00</p>
             </div>
           </div>
           <button 
             onClick={() => rsvpRef.current?.scrollIntoView({ behavior: 'smooth' })}
             className="animate-hero px-12 py-4 bg-transparent border border-neon text-neon text-xs font-bold tracking-[0.3em] uppercase hover:bg-neon hover:text-black transition-all duration-500"
           >
-            Acessar Protocolo
+            Access Protocol
           </button>
         </div>
       </section>
@@ -177,7 +155,7 @@ export default function Home() {
       {/* --- TICKER --- */}
       <div className="w-full bg-neon text-background py-2 overflow-hidden whitespace-nowrap font-black text-[10px] uppercase z-20 relative">
         <div className="inline-block animate-[marquee_25s_linear_infinite]">
-          {Array(10).fill(" /// EVENTATION PROTOCOL ACTIVE /// RESTRICTED ACCESS /// NO PHOTOGRAPHY ").join("")}
+          {Array(10).fill(" /// EVENTATION PROTOCOL ACTIVE /// RESTRICTED ACCESS /// NO PHOTOGRAPHY /// ENCRYPTED INVITE ONLY ").join("")}
         </div>
       </div>
 
@@ -185,13 +163,13 @@ export default function Home() {
       <section ref={infoRef} className="max-w-6xl mx-auto py-40 px-6 z-10 relative">
         <div className="grid md:grid-cols-2 gap-8">
           {[
-            { label: "COORDINATES", val: "Setor Industrial 42", sub: "Entrada via beco leste. Procure pela luz de frequência 440Hz." },
-            { label: "SECURITY", val: "Level 9 Clearence", sub: "Apresentação de ID Digital é obrigatória na primeira barreira." }
+            { label: "COORDINATES", val: "Industrial Sector 42", sub: "Entrance via east alley. Scan for 440Hz frequency light beacon." },
+            { label: "SECURITY", val: "Level 9 Clearance", sub: "Digital ID presentation is mandatory at the first perimeter breach." }
           ].map((item, i) => (
             <div key={i} className="info-card relative p-12 bg-surface/20 backdrop-blur-3xl border border-white/5 group hover:border-neon/30 transition-all duration-500">
               <div className="absolute top-0 left-0 w-6 h-1 bg-neon scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500"></div>
-              <p className="text-neon text-[9px] tracking-widest mb-6 opacity-60">// 0{i+1}_{item.label}</p>
-              <h2 className="text-3xl font-bold tracking-tighter mb-4">{item.val}</h2>
+              <p className="text-neon text-[9px] tracking-widest mb-6 opacity-60 font-bold">// 0{i+1}_{item.label}</p>
+              <h2 className="text-3xl font-bold tracking-tighter mb-4 uppercase">{item.val}</h2>
               <p className="text-muted text-sm leading-relaxed tracking-tight">{item.sub}</p>
             </div>
           ))}
@@ -200,7 +178,7 @@ export default function Home() {
 
       {/* --- FAQ --- */}
       <section ref={faqRef} className="max-w-3xl mx-auto py-20 px-6 z-10 relative">
-        <h3 className="text-xs text-neon tracking-[0.4em] mb-12 uppercase opacity-50 text-center">Informações_Adicionais</h3>
+        <h3 className="text-xs text-neon tracking-[0.4em] mb-12 uppercase opacity-50 text-center font-bold">Additional_Intel</h3>
         <div className="space-y-4">
           {faqData.map((item, i) => (
             <div key={i} className="faq-item border border-white/10 bg-surface/10 overflow-hidden transition-colors hover:border-white/20">
@@ -212,7 +190,7 @@ export default function Home() {
                 <span className={`text-neon transition-transform duration-300 ${openFaq === i ? 'rotate-45' : ''}`}>+</span>
               </button>
               <div className={`transition-all duration-500 ease-in-out px-6 ${openFaq === i ? 'max-h-40 pb-6 opacity-100' : 'max-h-0 opacity-0'}`}>
-                <p className="text-muted text-xs leading-relaxed">{item.a}</p>
+                <p className="text-muted text-[11px] leading-relaxed uppercase tracking-wider">{item.a}</p>
               </div>
             </div>
           ))}
@@ -228,37 +206,37 @@ export default function Home() {
               <div className="w-2.5 h-2.5 rounded-full bg-white/5"></div>
               <div className="w-2.5 h-2.5 rounded-full bg-white/5"></div>
             </div>
-            <span className="text-[10px] text-muted tracking-widest uppercase">Eventation_Access_Terminal</span>
+            <span className="text-[10px] text-muted tracking-widest uppercase font-bold">Access_Terminal_v2.0</span>
             <div className="w-10"></div>
           </div>
           <div className="p-8 space-y-8">
-            <p className="text-neon text-xs tracking-widest underline underline-offset-4 uppercase">Login_Sequence_Required</p>
+            <p className="text-neon text-xs tracking-widest underline underline-offset-4 uppercase font-bold tracking-[0.2em]">Login_Sequence_Required</p>
             <form className="space-y-8" onSubmit={(e) => e.preventDefault()}>
               <div className="space-y-6">
                 <div className="flex flex-col gap-2">
-                  <label className="text-[10px] text-white/40 tracking-widest uppercase">Full_Name</label>
+                  <label className="text-[10px] text-white/40 tracking-widest uppercase font-bold">Subject_Identity</label>
                   <div className="flex items-center border-b border-white/10 focus-within:border-neon transition-colors pb-2">
                     <span className="text-neon mr-3 font-bold">{'>'}</span>
-                    <input type="text" className="bg-transparent border-none outline-none w-full text-sm" placeholder="ID do Convidado..." />
+                    <input type="text" className="bg-transparent border-none outline-none w-full text-sm font-mono" placeholder="Input guest name..." />
                   </div>
                 </div>
                 <div className="flex flex-col gap-2">
-                  <label className="text-[10px] text-white/40 tracking-widest uppercase">Comm_Channel</label>
+                  <label className="text-[10px] text-white/40 tracking-widest uppercase font-bold">Comm_Channel</label>
                   <div className="flex items-center border-b border-white/10 focus-within:border-neon transition-colors pb-2">
                     <span className="text-neon mr-3 font-bold">{'>'}</span>
-                    <input type="email" className="bg-transparent border-none outline-none w-full text-sm" placeholder="email@protocol.com" />
+                    <input type="email" className="bg-transparent border-none outline-none w-full text-sm font-mono" placeholder="email@protocol.xyz" />
                   </div>
                 </div>
               </div>
               <button className="w-full bg-neon text-black py-4 font-black text-xs tracking-[0.3em] uppercase hover:bg-white transition-all">
-                Gerar Access Token
+                Generate Access Token
               </button>
             </form>
           </div>
         </div>
       </section>
 
-{/* --- FOOTER SECTION --- */}
+      {/* --- FOOTER SECTION --- */}
       <footer className="w-full py-20 px-6 border-t border-white/5 relative z-10 bg-black/50 backdrop-blur-md">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
           
@@ -268,7 +246,7 @@ export default function Home() {
               Eventation<span className="text-neon">_</span>
             </div>
             <p className="text-[10px] text-muted tracking-[0.3em] uppercase">
-              Terminal de Acesso v1.0.4
+              Terminal de Acess v1.0.4
             </p>
           </div>
 
