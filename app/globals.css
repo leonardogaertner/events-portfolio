@@ -1,26 +1,61 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-background: #050505;
+  --color-neon: #CCFF00;
+  --color-surface: #111111;
+  --color-muted: #888888;
+  --font-mono: var(--font-space-mono), monospace;
+  --font-sans: var(--font-inter), sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Esconde o cursor real em toda a aplicação */
+html, body, * {
+  cursor: none !important;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-background);
+  color: white;
+  overflow-x: hidden;
+}
+
+/* O PONTO CENTRAL */
+.cursor-dot {
+  width: 8px;
+  height: 8px;
+  background-color: var(--color-neon);
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  border-radius: 50%;
+  transform: translate(-50%, -50%); /* Centraliza no ponto do mouse */
+}
+
+/* O ANEL QUE SEGUE */
+.cursor-outline {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--color-neon);
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9998;
+  border-radius: 50%;
+  transform: translate(-50%, -50%); /* Centraliza no ponto do mouse */
+  transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease;
+}
+
+.grain {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+  opacity: 0.03;
+  pointer-events: none;
+  z-index: 90; /* Abaixo do cursor, acima do conteúdo */
 }
